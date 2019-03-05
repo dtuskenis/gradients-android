@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     >
 
-    <com.dtuskenis.gradients.DummyView
+    <com.dtuskenis.gradients.LinearGradientView
+        android:id="@+id/gradientView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
