@@ -11,4 +11,19 @@
         android:layout_height="match_parent"
         />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBlackTranslucent"
+        />
+
+    <com.dtuskenis.gradients.LinearGradientEditor
+        android:id="@+id/gradientEditorView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/gradient_editor_margin"
+        android:layout_marginEnd="@dimen/gradient_editor_margin"
+        android:layout_gravity="center"
+        />
+
 </FrameLayout>
