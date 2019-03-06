@@ -27,3 +27,5 @@ class GradientComponents(val first: Component = Component(Color(WHITE), 0.0f),
         }
     }
 }
+
+fun List<Component>.wrap() = GradientComponents.from(this)
