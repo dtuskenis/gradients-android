@@ -18,14 +18,12 @@ internal fun GradientEditor.addColorAt(relativePosition: Float) {
     }
 }
 
-internal fun GradientEditor.editColorAt(index: Int) {
-    components.toList().getOrNull(index)?.let {
-        val removeComponent = {
-            mutateComponents { it.removeAt(index) }
-        }.takeIf { components.rest.isNotEmpty() }
+internal fun GradientEditor.editColorOf(component: Gradient.Component) {
+    val removeComponent = {
+        mutateComponents { it.remove(component) }
+    }.takeIf { components.rest.isNotEmpty() }
 
-        delegate?.editColor(it.color, removeComponent)
-    }
+    delegate?.editColor(component.color, removeComponent)
 }
 
 private fun GradientEditor.mutateComponents(block: (MutableList<Gradient.Component>) -> Unit) {

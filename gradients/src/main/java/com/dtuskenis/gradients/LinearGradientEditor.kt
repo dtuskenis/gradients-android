@@ -27,8 +27,8 @@ class LinearGradientEditor: View, GradientEditor {
 
     private var isAddButtonEnabled = true
 
-    private var touchingAddButton = false
-    private var touchingEditButtonIndex: Int? = null
+    private var draggingAddButton = false
+    private var touchedComponent: Gradient.Component? = null
 
     var onComponentsChanged: ((GradientComponents) -> Unit)? = null
 
@@ -67,7 +67,6 @@ class LinearGradientEditor: View, GradientEditor {
                                heightMeasureSpec,
                                desiredHeight = addButtonBitmap.height) { width, height ->
             setAddButtonToCenter()
-
             setMeasuredDimension(width, height)
         }
     }
@@ -104,62 +103,56 @@ class LinearGradientEditor: View, GradientEditor {
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
 
+        val touchOffsetX = event.x
         val addButtonWidth = addButtonBitmap.width.toFloat()
 
-        val width = width.toFloat()
-
-        val update = {
-            val offset = event.x - addButtonWidth / 2
-            addButtonOffset = max(min(offset, width - addButtonWidth), 0f)
+        fun updateAddButtonOffset() {
+            val unconfinedOffset = touchOffsetX - addButtonWidth / 2
+            addButtonOffset = max(min(unconfinedOffset, width.toFloat() - addButtonWidth), 0f)
             invalidate()
         }
 
-        if (event.action == MotionEvent.ACTION_DOWN) {
-            if (isAddButtonEnabled && event.x in addButtonOffset..(addButtonOffset + addButtonWidth)) {
-                touchingAddButton = true
+        when(event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                val foundTouchedComponent = findTouchedComponent(touchOffsetX)
+                val isAddButtonTouched = touchOffsetX in addButtonOffset..(addButtonOffset + addButtonWidth)
 
-                update()
-            } else {
-                val offset = event.x
+                if (isAddButtonEnabled && (isAddButtonTouched || foundTouchedComponent == null)) {
+                    draggingAddButton = true
+                    updateAddButtonOffset()
+                } else {
+                    touchedComponent = foundTouchedComponent
+                }
+            }
+            MotionEvent.ACTION_MOVE -> {
+                if (draggingAddButton) {
+                    updateAddButtonOffset()
+                }
+            }
+            MotionEvent.ACTION_UP -> {
+                if (draggingAddButton) {
+                    draggingAddButton = false
 
-                touchingEditButtonIndex =
-                components
-                    .find {
-                        val absPos = it.relativePosition * (width - addButtonWidth) + addButtonWidth / 2
-                        offset in (absPos - addButtonWidth / 2)..(absPos + addButtonWidth / 2)
-                    }
-                    ?.let { components.indexOf(it) }
-
-                if (touchingEditButtonIndex == null) {
-                    touchingAddButton = true
-
-                    update()
+                    addColorAt(relativePosition = addButtonOffset / (width - addButtonWidth))
+                } else {
+                    touchedComponent?.let { editColorOf(it) }
+                    touchedComponent = null
                 }
             }
         }
 
-        if (event.action == MotionEvent.ACTION_MOVE) {
-            if (touchingAddButton) {
-                update()
-            } else {
-                // recalculate? edit button index
-            }
-        }
-
-        if (event.action == MotionEvent.ACTION_UP) {
-            if (touchingAddButton) {
-                touchingAddButton = false
-
-                val colorPos = (addButtonOffset) / (width - addButtonWidth)
-
-                addColorAt(colorPos)
-            } else {
-                touchingEditButtonIndex?.let { editColorAt(it) }
-                touchingEditButtonIndex = null
-            }
-        }
-
         return true
+    }
+
+    private fun findTouchedComponent(touchOffsetX: Float): Gradient.Component? {
+        val editButtonWidth = editButtonBitmap.width.toFloat()
+
+        return components.find {
+            val centerOffsetX =
+                it.relativePosition * (width.toFloat() - editButtonWidth) + editButtonWidth / 2
+
+            touchOffsetX in (centerOffsetX - editButtonWidth / 2)..(centerOffsetX + editButtonWidth / 2)
+        }
     }
 
     companion object {
