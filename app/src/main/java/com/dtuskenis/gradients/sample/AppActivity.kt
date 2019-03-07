@@ -6,7 +6,7 @@ import android.os.Bundle
 import com.dtuskenis.gradients.Gradient
 import com.dtuskenis.gradients.GradientComponents
 import android.support.v7.app.AlertDialog
-import com.dtuskenis.gradients.LinearGradientEditor
+import com.dtuskenis.gradients.GradientEditor
 import kotlinx.android.synthetic.main.activity_main.*
 
 class AppActivity : AppCompatActivity() {
@@ -30,11 +30,11 @@ class AppActivity : AppCompatActivity() {
             listOf(Color.RED to 0.0f,
                    Color.BLUE to 1.0f)
                 .map { Gradient.Component(Gradient.Color(it.first), it.second) }
-                .let { GradientComponents.from(it) }
+                .let { GradientComponents.normalizedFrom(it) }
 
-        gradientEditorView.target = gradientView
+        gradientEditorView.onComponentsChanged = { gradientView.components = it }
         gradientEditorView.components = gradientComponents
-        gradientEditorView.delegate = object : LinearGradientEditor.Delegate {
+        gradientEditorView.delegate = object : GradientEditor.Delegate {
             override fun addColor(onComplete: (Gradient.Color) -> Unit) {
                 colorsPool.random()
                     .let { Gradient.Color(it) }
