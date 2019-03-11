@@ -18,6 +18,6 @@ class LinearGradientView: View, Gradient {
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        LinearGradientDrawer.drawOn(canvas, components)
+        GradientDrawers.linear.drawOn(canvas, components)
     }
 }

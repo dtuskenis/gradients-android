@@ -79,7 +79,7 @@ class LinearGradientEditor: View, GradientEditor {
         val borderRect = RectF(gradientRect).apply { inset(BORDER_THICKNESS / 2, BORDER_THICKNESS / 2) }
 
         with(canvas) {
-            LinearGradientDrawer.drawOn(this, components, gradientRect)
+            GradientDrawers.linear.drawOn(this, components, gradientRect)
 
             drawRect(borderRect, borderPaint)
 

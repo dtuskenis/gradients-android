@@ -5,7 +5,9 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.Shader
 
-internal object LinearGradientDrawer {
+internal class GradientDrawer(private val createShader: (drawingRegion: RectF,
+                                                         colors: IntArray,
+                                                         positions: FloatArray) -> Shader) {
 
     private val gradientPaint = Paint()
 
@@ -19,14 +21,9 @@ internal object LinearGradientDrawer {
         val colors = components.map { it.color.toArgb() }
         val positions = components.map { it.relativePosition }
 
-        gradientPaint.shader =
-            android.graphics.LinearGradient(0.0f,
-                                            0.0f,
-                                            drawingRegion.width(),
-                                            0.0f,
+        gradientPaint.shader = createShader(drawingRegion,
                                             colors.toIntArray(),
-                                            positions.toFloatArray(),
-                                            Shader.TileMode.MIRROR)
+                                            positions.toFloatArray())
 
         canvas.drawRect(drawingRegion, gradientPaint)
     }
