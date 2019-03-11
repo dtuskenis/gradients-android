@@ -1,14 +1,16 @@
 package com.dtuskenis.gradients
 
+import android.graphics.Color
+
 interface GradientEditor: Gradient {
 
     var delegate: Delegate?
 
     interface Delegate {
 
-        fun addColor(onComplete: (Gradient.Color) -> Unit)
+        fun addColor(onComplete: (Color) -> Unit)
 
-        fun editColor(color: Gradient.Color, onRemove: (() -> Unit)?)
+        fun editColor(color: Color, onRemove: (() -> Unit)?)
     }
 }
 

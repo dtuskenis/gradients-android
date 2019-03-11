@@ -16,7 +16,7 @@ internal object LinearGradientDrawer {
                                             canvas.width.toFloat(),
                                             canvas.height.toFloat())) {
 
-        val colors = components.map { it.color.rawValue }
+        val colors = components.map { it.color.toArgb() }
         val positions = components.map { it.relativePosition }
 
         gradientPaint.shader =

@@ -88,7 +88,7 @@ class LinearGradientEditor: View, GradientEditor {
                 val centerY = wholeRect.centerY()
                 val radius = gradientRect.height() / 2
 
-                editButtonBackgroundPaint.color = it.color.rawValue
+                editButtonBackgroundPaint.color = it.color.toArgb()
 
                 drawCircle(offsetX, centerY, radius, editButtonBackgroundPaint)
                 drawCircle(offsetX, centerY, radius - BORDER_THICKNESS / 2, borderPaint)

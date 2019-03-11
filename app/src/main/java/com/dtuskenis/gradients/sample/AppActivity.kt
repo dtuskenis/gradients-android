@@ -19,7 +19,7 @@ class AppActivity : AppCompatActivity() {
         Color.RED,
         Color.GREEN,
         Color.GRAY
-    )
+    ).map { Color.valueOf(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,19 +29,18 @@ class AppActivity : AppCompatActivity() {
         val gradientComponents =
             listOf(Color.RED to 0.0f,
                    Color.BLUE to 1.0f)
-                .map { Gradient.Component(Gradient.Color(it.first), it.second) }
+                .map { Gradient.Component(Color.valueOf(it.first), it.second) }
                 .let { GradientComponents.normalizedFrom(it) }
 
         gradientEditorView.onComponentsChanged = { gradientView.components = it }
         gradientEditorView.components = gradientComponents
         gradientEditorView.delegate = object : GradientEditor.Delegate {
-            override fun addColor(onComplete: (Gradient.Color) -> Unit) {
+            override fun addColor(onComplete: (Color) -> Unit) {
                 colorsPool.random()
-                    .let { Gradient.Color(it) }
                     .let(onComplete)
             }
 
-            override fun editColor(color: Gradient.Color, onRemove: (() -> Unit)?) {
+            override fun editColor(color: Color, onRemove: (() -> Unit)?) {
                 onRemove?.let { remove -> confirmRemove { remove() } }
             }
         }

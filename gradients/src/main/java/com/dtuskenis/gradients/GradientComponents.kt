@@ -1,13 +1,13 @@
 package com.dtuskenis.gradients
 
+import android.graphics.Color
 import android.graphics.Color.BLACK
 import android.graphics.Color.WHITE
-import com.dtuskenis.gradients.Gradient.Color
 import com.dtuskenis.gradients.Gradient.Component
 import java.lang.RuntimeException
 
-class GradientComponents(val first: Color = Color(WHITE),
-                         val last: Color = Color(BLACK),
+class GradientComponents(val first: Color = Color.valueOf(WHITE),
+                         val last: Color = Color.valueOf(BLACK),
                          val rest: List<Component> = emptyList()): Iterable<Component> {
 
     private val list = listOf(Component(first, 0.0f)) + rest + Component(last, 1.0f)

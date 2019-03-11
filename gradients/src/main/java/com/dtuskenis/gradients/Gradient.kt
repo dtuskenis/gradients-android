@@ -1,13 +1,11 @@
 package com.dtuskenis.gradients
 
-import android.support.annotation.ColorRes
+import android.graphics.Color
 import java.lang.RuntimeException
 
 interface Gradient {
 
     var components: GradientComponents
-
-    data class Color(@ColorRes var rawValue: Int)
 
     data class Component(val color: Color,
                          val relativePosition: Float) {
