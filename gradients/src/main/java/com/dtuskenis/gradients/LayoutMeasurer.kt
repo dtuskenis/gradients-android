@@ -5,26 +5,29 @@ import kotlin.math.min
 
 internal object LayoutMeasurer {
 
+    data class SpecSize(val width: Int,
+                        val height: Int)
+
     fun measure(widthMeasureSpec: Int,
                 heightMeasureSpec: Int,
-                desiredWidth: Int? = null,
-                desiredHeight: Int? = null,
-                measuredDimenstionConsumer: (Int, Int) -> Unit) {
-        val widthMode = View.MeasureSpec.getMode(widthMeasureSpec)
-        val widthSize = View.MeasureSpec.getSize(widthMeasureSpec)
+                desiredWidth: ((SpecSize) -> Int)? = null,
+                desiredHeight: ((SpecSize) -> Int)? = null,
+                measuredDimensionConsumer: (Int, Int) -> Unit) {
+        val specSize = SpecSize(width = View.MeasureSpec.getSize(widthMeasureSpec),
+                                height = View.MeasureSpec.getSize(heightMeasureSpec))
 
+        val widthMode = View.MeasureSpec.getMode(widthMeasureSpec)
         val heightMode = View.MeasureSpec.getMode(heightMeasureSpec)
-        val heightSize = View.MeasureSpec.getSize(heightMeasureSpec)
 
         val width = determineDimension(widthMode,
-                                       widthSize,
-                                       desiredWidth)
+                                       specSize.width,
+                                       desiredWidth?.invoke(specSize))
 
         val height = determineDimension(heightMode,
-                                        heightSize,
-                                        desiredHeight)
+                                        specSize.height,
+                                        desiredHeight?.invoke(specSize))
 
-        measuredDimenstionConsumer(width, height)
+        measuredDimensionConsumer(width, height)
     }
 
     private fun determineDimension(specMode: Int,

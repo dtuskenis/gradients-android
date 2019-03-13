@@ -10,7 +10,7 @@ interface GradientEditor: Gradient {
 
         fun addColor(onComplete: (Color) -> Unit)
 
-        fun editColor(color: Color, onRemove: (() -> Unit)?)
+        fun editColor(color: Color, onChange: (Color) -> Unit, onRemove: (() -> Unit)?)
     }
 }
 
@@ -21,11 +21,18 @@ internal fun GradientEditor.addColorAt(relativePosition: Float) {
 }
 
 internal fun GradientEditor.editColorOf(component: Gradient.Component) {
+    val changeComponentColor = { newColor: Color ->
+        mutateComponents {
+            val index = it.indexOf(component)
+            val oldComponent = it.removeAt(index)
+            it.add(index, oldComponent.copy(color = newColor))
+        }
+    }
     val removeComponent = {
         mutateComponents { it.remove(component) }
     }.takeIf { components.rest.isNotEmpty() }
 
-    delegate?.editColor(component.color, removeComponent)
+    delegate?.editColor(component.color, changeComponentColor, removeComponent)
 }
 
 private fun GradientEditor.mutateComponents(block: (MutableList<Gradient.Component>) -> Unit) {

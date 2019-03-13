@@ -8,6 +8,7 @@ import com.dtuskenis.gradients.GradientComponents
 import android.support.v7.app.AlertDialog
 import com.dtuskenis.gradients.GradientEditor
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.view_color_picker.view.*
 
 class AppActivity : AppCompatActivity() {
 
@@ -36,23 +37,31 @@ class AppActivity : AppCompatActivity() {
         gradientEditorView.components = gradientComponents
         gradientEditorView.delegate = object : GradientEditor.Delegate {
             override fun addColor(onComplete: (Color) -> Unit) {
-                colorsPool.random()
-                    .let(onComplete)
+                showEditingDialog(colorsPool.random(), onComplete)
             }
 
-            override fun editColor(color: Color, onRemove: (() -> Unit)?) {
-                onRemove?.let { remove -> confirmRemove { remove() } }
+            override fun editColor(color: Color, onChange: (Color) -> Unit, onRemove: (() -> Unit)?) {
+                showEditingDialog(color, onChange, onRemove)
             }
         }
     }
 
-    private fun confirmRemove(onConfirmed: () -> Unit) {
-        AlertDialog.Builder(this)
-            .setTitle(R.string.are_you_sure)
-            .setMessage(R.string.this_action_cannot_be_undone)
-            .setCancelable(true)
-            .setPositiveButton(R.string.yes) { _, _ -> onConfirmed() }
-            .setNegativeButton(R.string.no) { dialog, _ -> dialog.cancel() }
-            .show()
+    private fun showEditingDialog(color: Color,
+                                  onChange: (Color) -> Unit,
+                                  onRemove: (() -> Unit)? = null) {
+        layoutInflater.inflate(R.layout.view_color_picker, null).apply {
+            sampleView.setBackgroundColor(color.toArgb())
+            hsvPickerView.selectedColor = color
+            hsvPickerView.onColorChanged = { sampleView.setBackgroundColor(it.toArgb()) }
+
+            AlertDialog.Builder(context)
+                    .setTitle(R.string.editing_dialog_title)
+                    .setMessage(R.string.editing_dialog_message)
+                    .setView(this)
+                    .setCancelable(true)
+                    .setPositiveButton(R.string.editing_dialog_action_save) { _, _ ->  onChange(hsvPickerView.selectedColor) }
+                    .apply { onRemove?.let { setNegativeButton(R.string.editing_dialog_action_remove) { _, _ -> it() } } }
+                    .show()
+        }
     }
 }

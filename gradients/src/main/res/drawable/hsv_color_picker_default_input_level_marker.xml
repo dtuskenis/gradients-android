@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle"
+    >
+
+    <stroke
+        android:color="@android:color/black"
+        android:width="@dimen/hsv_color_picker_default_marker_stroke_width"
+        />
+
+    <size
+        android:width="@dimen/hsv_color_picker_default_marker_size_medium"
+        android:height="@dimen/hsv_color_picker_default_marker_size_large"
+        />
+</shape>

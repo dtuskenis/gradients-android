@@ -1,9 +1,6 @@
 package com.dtuskenis.gradients
 
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.RectF
-import android.graphics.Shader
+import android.graphics.*
 
 internal class GradientDrawer(private val createShader: (drawingRegion: RectF,
                                                          colors: IntArray,
@@ -16,11 +13,13 @@ internal class GradientDrawer(private val createShader: (drawingRegion: RectF,
                drawingRegion: RectF = RectF(0.0f,
                                             0.0f,
                                             canvas.width.toFloat(),
-                                            canvas.height.toFloat())) {
+                                            canvas.height.toFloat()),
+               porterDuffMode: PorterDuff.Mode? = null) {
 
         val colors = components.map { it.color.toArgb() }
         val positions = components.map { it.relativePosition }
 
+        gradientPaint.xfermode = porterDuffMode?.let { PorterDuffXfermode(it) }
         gradientPaint.shader = createShader(drawingRegion,
                                             colors.toIntArray(),
                                             positions.toFloatArray())

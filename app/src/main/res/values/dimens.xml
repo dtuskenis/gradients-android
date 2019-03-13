@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="gradient_editor_margin">50dp</dimen>
+
+    <dimen name="color_picker_view_padding">10dp</dimen>
+    <dimen name="color_picker_sample_size">30dp</dimen>
+    <dimen name="color_picker_hsv_view_size">200dp</dimen>
+    <dimen name="color_picker_hsv_view_padding">@dimen/color_picker_view_padding</dimen>
+
 </resources>

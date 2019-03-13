@@ -65,7 +65,7 @@ class LinearGradientEditor: View, GradientEditor {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         LayoutMeasurer.measure(widthMeasureSpec,
                                heightMeasureSpec,
-                               desiredHeight = addButtonBitmap.height) { width, height ->
+                               desiredHeight = { addButtonBitmap.height }) { width, height ->
             setAddButtonToCenter()
             setMeasuredDimension(width, height)
         }

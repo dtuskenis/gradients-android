@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Gradients Sample App</string>
 
-    <string name="are_you_sure">Are you sure?</string>
-    <string name="this_action_cannot_be_undone">This action cannot be undone.</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
+    <string name="editing_dialog_title">Edit</string>
+    <string name="editing_dialog_message">Here you can change color of the gradient component.</string>
+    <string name="editing_dialog_action_save">Save</string>
+    <string name="editing_dialog_action_remove">Remove color</string>
 
 </resources>

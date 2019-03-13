@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="hsv_color_picker_default_input_level_bar_height">10dp</dimen>
+    <dimen name="hsv_color_picker_default_marker_stroke_width">2dp</dimen>
+    <dimen name="hsv_color_picker_default_marker_size_large">16dp</dimen>
+    <dimen name="hsv_color_picker_default_marker_size_medium">10dp</dimen>
+    <dimen name="hsv_color_picker_default_internal_spacing">12dp</dimen>
+</resources>

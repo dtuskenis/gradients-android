@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.Color.BLACK
 import android.graphics.Color.WHITE
 import com.dtuskenis.gradients.Gradient.Component
+import com.dtuskenis.gradients.extensions.scale
 import java.lang.RuntimeException
 
 class GradientComponents(val first: Color = Color.valueOf(WHITE),
@@ -16,6 +17,18 @@ class GradientComponents(val first: Color = Color.valueOf(WHITE),
 
     companion object {
 
+        fun evenlyDistributed(colors: List<Color>): GradientComponents {
+            if (colors.size < 2) {
+                throw RuntimeException("gradient should have at least 2 colors")
+            }
+
+            val rest = colors.withIndex().dropFirstAndLast().map { Component(it.value, it.index.toFloat() / (colors.size - 1)) }
+
+            return GradientComponents(first = colors.first(),
+                                      last = colors.last(),
+                                      rest = rest)
+        }
+
         fun normalizedFrom(list: List<Component>): GradientComponents {
             if (list.size < 2) {
                 throw RuntimeException("gradient should have at least 2 colors")
@@ -25,17 +38,18 @@ class GradientComponents(val first: Color = Color.valueOf(WHITE),
 
             return GradientComponents(first = normalizedList.first().color,
                                       last = normalizedList.last().color,
-                                      rest = normalizedList.drop(1).dropLast(1))
+                                      rest = normalizedList.dropFirstAndLast())
         }
 
-        private fun List<Component>.normalize(): List<Component> {
+        private fun Iterable<Component>.normalize(): Iterable<Component> {
             val minPosition = minBy { it.relativePosition }!!.relativePosition
             val maxPosition = maxBy { it.relativePosition }!!.relativePosition
 
             return sortedBy { it.relativePosition }
-                .map { it.copy(relativePosition = scaleFloat(it.relativePosition,
-                                                             minPosition..maxPosition,
-                                                             0.0f..1.0f)) }
+                    .map { it.copy(relativePosition = it.relativePosition.scale(minPosition..maxPosition,
+                                                                                0.0f..1.0f)) }
         }
+
+        private fun <T> Iterable<T>.dropFirstAndLast() = drop(1).dropLast(1)
     }
 }
