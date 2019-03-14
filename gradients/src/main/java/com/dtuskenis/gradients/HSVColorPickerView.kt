@@ -81,15 +81,7 @@ class HSVColorPickerView: View {
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
 
-        val paddingLeft = paddingLeft.toFloat()
-        val paddingRight = paddingRight.toFloat()
-        val paddingTop = paddingTop.toFloat()
-        val paddingBottom = paddingBottom.toFloat()
-
-        layoutRect.set(paddingLeft,
-                       paddingTop,
-                       width.toFloat() - paddingRight,
-                       height.toFloat() - paddingBottom)
+        setContentDimensionsTo(layoutRect)
 
         hueSaturationCircleRect.set(layoutRect.left,
                                     layoutRect.top,

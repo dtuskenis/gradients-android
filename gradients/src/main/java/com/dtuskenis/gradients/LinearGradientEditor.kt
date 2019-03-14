@@ -5,6 +5,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import com.dtuskenis.gradients.extensions.setContentDimensionsTo
 import kotlin.math.max
 import kotlin.math.min
 
@@ -19,6 +20,9 @@ class LinearGradientEditor: View, GradientEditor {
         color = Color.WHITE
         style = Paint.Style.STROKE
     }
+
+    private val gradientRect = RectF()
+    private val borderRect = RectF()
 
     private val addButtonBitmap: Bitmap
     private val editButtonBitmap: Bitmap
@@ -59,7 +63,7 @@ class LinearGradientEditor: View, GradientEditor {
     }
 
     private fun setAddButtonToCenter() {
-        addButtonOffset = (measuredWidth - addButtonBitmap.width).toFloat() / 2
+        addButtonOffset = measuredWidth.toFloat() / 2
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -71,32 +75,40 @@ class LinearGradientEditor: View, GradientEditor {
         }
     }
 
+    override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
+        super.onSizeChanged(width, height, oldWidth, oldHeight)
+
+        setContentDimensionsTo(gradientRect)
+
+        gradientRect.inset(editButtonBitmap.width.toFloat() / 2, 0.0f)
+
+        borderRect.set(gradientRect)
+        borderRect.inset(BORDER_THICKNESS / 2, BORDER_THICKNESS / 2)
+    }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
-        val wholeRect = RectF(0.0f, 0.0f, width.toFloat(), height.toFloat())
-        val gradientRect = RectF(wholeRect).apply { inset(addButtonBitmap.width.toFloat() / 2, 0.0f) }
-        val borderRect = RectF(gradientRect).apply { inset(BORDER_THICKNESS / 2, BORDER_THICKNESS / 2) }
 
         with(canvas) {
             GradientDrawers.linear.drawOn(this, components, gradientRect)
 
             drawRect(borderRect, borderPaint)
 
+            val centerY = gradientRect.centerY()
+
             components.forEach {
                 val offsetX = gradientRect.width() * it.relativePosition + gradientRect.left
-                val centerY = wholeRect.centerY()
                 val radius = gradientRect.height() / 2
 
                 editButtonBackgroundPaint.color = it.color.toArgb()
 
                 drawCircle(offsetX, centerY, radius, editButtonBackgroundPaint)
                 drawCircle(offsetX, centerY, radius - BORDER_THICKNESS / 2, borderPaint)
-                drawBitmap(editButtonBitmap, offsetX - editButtonBitmap.width.toFloat() / 2, 0f, null)
+                drawBitmap(editButtonBitmap, offsetX - editButtonBitmap.width / 2, centerY - editButtonBitmap.height / 2, null)
             }
 
             if (isAddButtonEnabled) {
-                drawBitmap(addButtonBitmap, addButtonOffset, 0f, null)
+                drawBitmap(addButtonBitmap, addButtonOffset - addButtonBitmap.width / 2, centerY - addButtonBitmap.height / 2, null)
             }
         }
     }
@@ -107,15 +119,14 @@ class LinearGradientEditor: View, GradientEditor {
         val addButtonWidth = addButtonBitmap.width.toFloat()
 
         fun updateAddButtonOffset() {
-            val unconfinedOffset = touchOffsetX - addButtonWidth / 2
-            addButtonOffset = max(min(unconfinedOffset, width.toFloat() - addButtonWidth), 0f)
+            addButtonOffset = max(min(touchOffsetX, gradientRect.right), gradientRect.left)
             invalidate()
         }
 
         when(event.action) {
             MotionEvent.ACTION_DOWN -> {
                 val foundTouchedComponent = findTouchedComponent(touchOffsetX)
-                val isAddButtonTouched = touchOffsetX in addButtonOffset..(addButtonOffset + addButtonWidth)
+                val isAddButtonTouched = touchOffsetX in (addButtonOffset - addButtonWidth / 2)..(addButtonOffset + addButtonWidth / 2)
 
                 if (isAddButtonEnabled && (isAddButtonTouched || foundTouchedComponent == null)) {
                     draggingAddButton = true
@@ -133,7 +144,7 @@ class LinearGradientEditor: View, GradientEditor {
                 if (draggingAddButton) {
                     draggingAddButton = false
 
-                    addColorAt(relativePosition = addButtonOffset / (width - addButtonWidth))
+                    addColorAt(relativePosition = (addButtonOffset - gradientRect.left) / gradientRect.width())
                 } else {
                     touchedComponent?.let { editColorOf(it) }
                     touchedComponent = null
@@ -148,8 +159,7 @@ class LinearGradientEditor: View, GradientEditor {
         val editButtonWidth = editButtonBitmap.width.toFloat()
 
         return components.find {
-            val centerOffsetX =
-                it.relativePosition * (width.toFloat() - editButtonWidth) + editButtonWidth / 2
+            val centerOffsetX = it.relativePosition * gradientRect.width() + gradientRect.left
 
             touchOffsetX in (centerOffsetX - editButtonWidth / 2)..(centerOffsetX + editButtonWidth / 2)
         }
