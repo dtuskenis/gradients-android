@@ -64,16 +64,14 @@ class LinearGradientEditor: View, GradientEditor {
     }
 
     private fun setAddButtonToCenter() {
-        addButtonOffset = measuredWidth.toFloat() / 2
+        addButtonOffset = gradientRect.width() / 2 + gradientRect.left
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         getMeasuredDimensions(widthMeasureSpec,
                               heightMeasureSpec,
-                              desiredHeight = { addButtonBitmap.height }) {
-            setAddButtonToCenter()
-            setMeasuredDimension(it.width, it.height)
-        }
+                              desiredHeight = { addButtonBitmap.height },
+                              onComplete = { setMeasuredDimension(it.width, it.height) })
     }
 
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
@@ -85,6 +83,8 @@ class LinearGradientEditor: View, GradientEditor {
 
         borderRect.set(gradientRect)
         borderRect.inset(BORDER_THICKNESS / 2, BORDER_THICKNESS / 2)
+
+        setAddButtonToCenter()
     }
 
     override fun onDraw(canvas: Canvas) {
