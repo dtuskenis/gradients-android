@@ -5,6 +5,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import com.dtuskenis.gradients.extensions.getMeasuredDimensions
 import com.dtuskenis.gradients.extensions.setContentDimensionsTo
 import kotlin.math.max
 import kotlin.math.min
@@ -67,11 +68,11 @@ class LinearGradientEditor: View, GradientEditor {
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        LayoutMeasurer.measure(widthMeasureSpec,
-                               heightMeasureSpec,
-                               desiredHeight = { addButtonBitmap.height }) { width, height ->
+        getMeasuredDimensions(widthMeasureSpec,
+                              heightMeasureSpec,
+                              desiredHeight = { addButtonBitmap.height }) {
             setAddButtonToCenter()
-            setMeasuredDimension(width, height)
+            setMeasuredDimension(it.width, it.height)
         }
     }
 

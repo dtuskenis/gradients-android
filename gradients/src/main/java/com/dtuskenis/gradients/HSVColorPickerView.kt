@@ -72,10 +72,10 @@ class HSVColorPickerView: View {
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        LayoutMeasurer.measure(widthMeasureSpec,
-                               heightMeasureSpec,
-                               desiredHeight = { it.width + internalSpacing.roundToInt() + inputLevelBar.intrinsicHeight },
-                               measuredDimensionConsumer = this::setMeasuredDimension)
+        getMeasuredDimensions(widthMeasureSpec,
+                              heightMeasureSpec,
+                              desiredHeight = { it.width + internalSpacing.roundToInt() + inputLevelBar.intrinsicHeight },
+                              onComplete = { setMeasuredDimension(it.width, it.height) })
     }
 
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
