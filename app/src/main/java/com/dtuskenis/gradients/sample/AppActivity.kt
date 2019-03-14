@@ -36,19 +36,19 @@ class AppActivity : AppCompatActivity() {
         gradientEditorView.onComponentsChanged = { gradientView.components = it }
         gradientEditorView.components = gradientComponents
         gradientEditorView.delegate = object : GradientEditor.Delegate {
-            override fun addColor(onComplete: (Color) -> Unit) {
-                showEditingDialog(colorsPool.random(), onComplete)
+            override fun onAddColor(add: (Color) -> Unit) {
+                showEditingDialog(colorsPool.random(), add)
             }
 
-            override fun editColor(color: Color, onChange: (Color) -> Unit, onRemove: (() -> Unit)?) {
-                showEditingDialog(color, onChange, onRemove)
+            override fun onEditColor(color: Color, change: (Color) -> Unit, remove: (() -> Unit)?) {
+                showEditingDialog(color, change, remove)
             }
         }
     }
 
     private fun showEditingDialog(color: Color,
-                                  onChange: (Color) -> Unit,
-                                  onRemove: (() -> Unit)? = null) {
+                                  changeColor: (Color) -> Unit,
+                                  removeColor: (() -> Unit)? = null) {
         layoutInflater.inflate(R.layout.view_color_picker, null).apply {
             sampleView.setBackgroundColor(color.toArgb())
             hsvPickerView.selectedColor = color
@@ -59,8 +59,8 @@ class AppActivity : AppCompatActivity() {
                     .setMessage(R.string.editing_dialog_message)
                     .setView(this)
                     .setCancelable(true)
-                    .setPositiveButton(R.string.editing_dialog_action_save) { _, _ ->  onChange(hsvPickerView.selectedColor) }
-                    .apply { onRemove?.let { setNegativeButton(R.string.editing_dialog_action_remove) { _, _ -> it() } } }
+                    .setPositiveButton(R.string.editing_dialog_action_save) { _, _ ->  changeColor(hsvPickerView.selectedColor) }
+                    .apply { removeColor?.let { setNegativeButton(R.string.editing_dialog_action_remove) { _, _ -> it() } } }
                     .show()
         }
     }
