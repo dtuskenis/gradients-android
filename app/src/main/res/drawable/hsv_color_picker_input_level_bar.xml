@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <item>
+
+        <shape
+            android:shape="rectangle"
+            >
+
+            <stroke
+                android:color="@android:color/white"
+                android:width="2dp"
+                />
+
+            <gradient
+                android:startColor="@color/colorBlackTranslucent"
+                android:endColor="@android:color/white"
+                android:type="linear"
+                />
+
+            <size
+                android:height="@dimen/hsv_color_picker_input_level_bar_height"
+                />
+
+        </shape>
+    </item>
+
+</layer-list>

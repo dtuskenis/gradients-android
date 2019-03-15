@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="HSVColorPickerView">
+        <attr name="hueSaturationMarker" format="reference"/>
+        <attr name="inputLevelMarker" format="reference"/>
+        <attr name="inputLevelBar" format="reference"/>
+    </declare-styleable>
+</resources>

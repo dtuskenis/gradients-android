@@ -4,15 +4,15 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.support.annotation.DrawableRes
+import android.support.annotation.StyleableRes
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import com.dtuskenis.gradients.extensions.*
+import com.dtuskenis.gradients.utils.AttributesResolver
 import kotlin.math.*
 
-class HSVColorPickerView: View {
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
+class HSVColorPickerView(context: Context, attributeSet: AttributeSet?): View(context, attributeSet) {
 
     private val layoutRect = RectF()
     private val hueSaturationCircleRect = RectF()
@@ -20,9 +20,9 @@ class HSVColorPickerView: View {
 
     private var hueSaturationCircleClipPath = Path()
 
-    private val hueSaturationMarker = loadAndCenterToIntrinsic(R.drawable.hsv_color_picker_default_hue_saturation_marker)
-    private val inputLevelMarker = loadAndCenterToIntrinsic(R.drawable.hsv_color_picker_default_input_level_marker)
-    private val inputLevelBar = loadAndCenterToIntrinsic(R.drawable.hsv_color_picker_default_input_level_bar)
+    private val hueSaturationMarker: Drawable
+    private val inputLevelMarker: Drawable
+    private val inputLevelBar: Drawable
 
     private val internalSpacing = context.resources.getDimension(R.dimen.hsv_color_picker_default_internal_spacing)
 
@@ -46,6 +46,24 @@ class HSVColorPickerView: View {
 
             notifyColorChanged()
         }
+
+    init {
+        val attributesResolver = AttributesResolver(context, attributeSet, R.styleable.HSVColorPickerView)
+
+        fun getDrawable(@StyleableRes index: Int, @DrawableRes fallbackId: Int) =
+                attributesResolver.getDrawable(index, fallbackId).apply { setBoundsCenteredToIntrinsic() }
+
+        hueSaturationMarker = getDrawable(index = R.styleable.HSVColorPickerView_hueSaturationMarker,
+                                          fallbackId = R.drawable.hsv_color_picker_default_hue_saturation_marker)
+
+        inputLevelMarker = getDrawable(index = R.styleable.HSVColorPickerView_inputLevelMarker,
+                                       fallbackId = R.drawable.hsv_color_picker_default_input_level_marker)
+
+        inputLevelBar = getDrawable(index = R.styleable.HSVColorPickerView_inputLevelBar,
+                                    fallbackId = R.drawable.hsv_color_picker_default_input_level_bar)
+
+        attributesResolver.cleanUp()
+    }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -185,10 +203,6 @@ class HSVColorPickerView: View {
 
     private fun notifyColorChanged() {
         onColorChanged?.invoke(selectedColor)
-    }
-
-    private fun loadAndCenterToIntrinsic(@DrawableRes id: Int): Drawable {
-        return context.getDrawable(id)!!.apply { setBoundsCenteredToIntrinsic() }
     }
 
     companion object {
