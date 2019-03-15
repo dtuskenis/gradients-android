@@ -1,4 +1,4 @@
-package com.dtuskenis.gradients
+package com.dtuskenis.gradients.drawing
 
 import android.graphics.*
 import com.dtuskenis.gradients.extensions.innerCircleRadius

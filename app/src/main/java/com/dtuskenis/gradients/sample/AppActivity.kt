@@ -3,10 +3,10 @@ package com.dtuskenis.gradients.sample
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import com.dtuskenis.gradients.Gradient
-import com.dtuskenis.gradients.GradientComponents
+import com.dtuskenis.gradients.core.Gradient
+import com.dtuskenis.gradients.core.GradientComponents
 import android.support.v7.app.AlertDialog
-import com.dtuskenis.gradients.GradientEditor
+import com.dtuskenis.gradients.editors.GradientEditor
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_color_picker.view.*
 

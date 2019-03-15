@@ -1,9 +1,9 @@
-package com.dtuskenis.gradients
+package com.dtuskenis.gradients.core
 
 import android.graphics.Color
 import android.graphics.Color.BLACK
 import android.graphics.Color.WHITE
-import com.dtuskenis.gradients.Gradient.Component
+import com.dtuskenis.gradients.core.Gradient.Component
 import com.dtuskenis.gradients.extensions.scale
 import java.lang.RuntimeException
 

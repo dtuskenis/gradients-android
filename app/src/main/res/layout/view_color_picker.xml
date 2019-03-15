@@ -7,7 +7,7 @@
     android:padding="@dimen/color_picker_view_padding"
     >
 
-    <com.dtuskenis.gradients.HSVColorPickerView
+    <com.dtuskenis.gradients.views.HSVColorPickerView
         android:id="@+id/hsvPickerView"
         android:layout_width="@dimen/color_picker_hsv_view_size"
         android:layout_height="wrap_content"

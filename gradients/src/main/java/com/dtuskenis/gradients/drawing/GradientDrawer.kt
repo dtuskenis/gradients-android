@@ -1,6 +1,7 @@
-package com.dtuskenis.gradients
+package com.dtuskenis.gradients.drawing
 
 import android.graphics.*
+import com.dtuskenis.gradients.core.GradientComponents
 
 internal class GradientDrawer(private val createShader: (drawingRegion: RectF,
                                                          colors: IntArray,

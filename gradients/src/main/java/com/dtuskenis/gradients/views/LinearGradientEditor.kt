@@ -1,10 +1,17 @@
-package com.dtuskenis.gradients
+package com.dtuskenis.gradients.views
 
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import com.dtuskenis.gradients.core.Gradient
+import com.dtuskenis.gradients.core.GradientComponents
+import com.dtuskenis.gradients.drawing.GradientDrawers
+import com.dtuskenis.gradients.R
+import com.dtuskenis.gradients.editors.GradientEditor
+import com.dtuskenis.gradients.editors.addColorAt
+import com.dtuskenis.gradients.editors.editColorOf
 import com.dtuskenis.gradients.extensions.getMeasuredDimensions
 import com.dtuskenis.gradients.extensions.setContentDimensionsTo
 import kotlin.math.max

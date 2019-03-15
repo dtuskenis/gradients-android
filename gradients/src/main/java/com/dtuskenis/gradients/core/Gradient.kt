@@ -1,4 +1,4 @@
-package com.dtuskenis.gradients
+package com.dtuskenis.gradients.core
 
 import android.graphics.Color
 import java.lang.RuntimeException

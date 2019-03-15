@@ -1,4 +1,4 @@
-package com.dtuskenis.gradients
+package com.dtuskenis.gradients.views
 
 import android.content.Context
 import android.graphics.*
@@ -8,6 +8,9 @@ import android.support.annotation.StyleableRes
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import com.dtuskenis.gradients.R
+import com.dtuskenis.gradients.core.GradientComponents
+import com.dtuskenis.gradients.drawing.GradientDrawers
 import com.dtuskenis.gradients.extensions.*
 import com.dtuskenis.gradients.utils.AttributesResolver
 import kotlin.math.*

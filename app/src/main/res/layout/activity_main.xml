@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     >
 
-    <com.dtuskenis.gradients.LinearGradientView
+    <com.dtuskenis.gradients.views.LinearGradientView
         android:id="@+id/gradientView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,7 +17,7 @@
         android:background="@color/colorBlackTranslucent"
         />
 
-    <com.dtuskenis.gradients.LinearGradientEditor
+    <com.dtuskenis.gradients.views.LinearGradientEditor
         android:id="@+id/gradientEditorView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -1,6 +1,8 @@
-package com.dtuskenis.gradients
+package com.dtuskenis.gradients.editors
 
 import android.graphics.Color
+import com.dtuskenis.gradients.core.Gradient
+import com.dtuskenis.gradients.core.GradientComponents
 
 interface GradientEditor: Gradient {
 

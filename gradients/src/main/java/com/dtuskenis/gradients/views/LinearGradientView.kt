@@ -1,9 +1,12 @@
-package com.dtuskenis.gradients
+package com.dtuskenis.gradients.views
 
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import com.dtuskenis.gradients.core.Gradient
+import com.dtuskenis.gradients.core.GradientComponents
+import com.dtuskenis.gradients.drawing.GradientDrawers
 
 class LinearGradientView: View, Gradient {
     constructor(context: Context?) : super(context)
